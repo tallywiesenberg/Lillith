@@ -1,10 +1,11 @@
 // add MIT License
-pragma solidity >=0.7.4;
+pragma solidity >=0.7.4 <0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 //ERC 20 Inheritance
-contract Lillith is ERC20 {
+contract Lillith is ERC20, Ownable {
 
     //Events
         event NewUser(address user); //NewUser
@@ -36,9 +37,19 @@ contract Lillith is ERC20 {
 
 
     //Add user (called from Python)
-        //Create user (struct)
-        //add to mapping (address => user struct)
-        //append to array
+    function newUser(address _newUser) external onlyOwner {
+        //require ownly owner, otherwise anyone can create new users...
+        //append new address to array
+        addresses.push(_newUser);
+        //Create user (struct) and add to mapping (address => user struct)
+        users[_newUser] = User({
+            balance:0,
+            hoursLogged:0,
+            swipes:0
+        });
+        //emit NewUser event
+        emit NewUser(_newUser);
+    }
 
     //Rewards
         //Dispense funds for 1 hour of logged time
