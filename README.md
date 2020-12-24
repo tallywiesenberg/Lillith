@@ -1,2 +1,3 @@
-# jane-protocol
-Smart Contract for Jane Protocol Dating
+# Lillith Protocol
+
+A stablecoin and digital cooperative.
