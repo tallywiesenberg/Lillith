@@ -6,6 +6,10 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 //ERC 20 Inheritance
 contract Lillith is ERC20 {
 
+    //Events
+        event NewUser(address user); //NewUser
+        event HourLogged(address user); //HourLogged
+        event NewMatch(address user1, address user2); //NewMatch ??
 
     //User Struct
     struct User {
@@ -23,10 +27,7 @@ contract Lillith is ERC20 {
     
     //Swipe Struct ??
 
-    //Events
-        //NewUser
-        //HourLogged
-        //NewMatch ??
+
     //Inital Mint
     constructor(uint256 _initialSupply) ERC20("Lillith", "LTH") {
         _mint(msg.sender, _initialSupply);
@@ -44,6 +45,8 @@ contract Lillith is ERC20 {
 
     //Costs
         //Charge per swipe
+        //Linear increase in swipe charge
+        //Slope = logistic engagement index
 
     //Redeem for USDT
 
@@ -51,5 +54,12 @@ contract Lillith is ERC20 {
         //calculate ratio of men to women
         //calculate cost per swipe relative to hours logged
         //aka user engagement
+        //get prices
+            //men to women ratio (gender index)
+            //avg swipes per hour (engagement index)
+
+    //Messaging
+        //Charge per message (flat rate??)
+
         
 }
