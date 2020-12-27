@@ -13,7 +13,9 @@ contract Lillith is ERC20, Ownable {
     //Gender ratio (uint)
     //Cost per message (uint)
     //Count of men (uint)
+    uint public numMen;
     //Count of women (uint)
+    uint public numWomen;
 
     //Events
         event NewUser(address user); //NewUser
@@ -57,6 +59,13 @@ contract Lillith is ERC20, Ownable {
             swipes:0,
             gender:_gender //collect gender as argument (false is male, true is female)
         });
+        //if gender is female (true), add 10E18 to female count
+        if (_gender) {
+            numWomen += 1*10^18;
+        //else, add 10E18 to male count
+        } else {
+            numMen += 1*10^18;
+        }
         //emit NewUser event
         emit NewUser(_newUser);
     }
