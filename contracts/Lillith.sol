@@ -3,19 +3,21 @@ pragma solidity >=0.7.4 <0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import {SafeMath} from "@openzeppelin/contracts/math/SafeMath.sol";
 
 //ERC 20 Inheritance
 contract Lillith is ERC20, Ownable {
 
-    using SafeMath for uint;
+    using SafeMath for uint256;
 
     //Engagement index (uint)
     //Gender ratio (uint)
+    uint256 public genderRatioIndex;
     //Cost per message (uint)
     //Count of men (uint)
-    uint public numMen;
+    uint256 public numMen;
     //Count of women (uint)
-    uint public numWomen;
+    uint256 public numWomen;
 
     //Events
         event NewUser(address user); //NewUser
@@ -87,10 +89,15 @@ contract Lillith is ERC20, Ownable {
 
     //Money market (calculate)
         //calculate ratio of men to women
+    function getGenderRatioIndex() external {
             //get count of men
             //get count of women
-            
+            //divide (safely) numMen by numWomen
+            genderRatioIndex = SafeMath.div(numMen, numWomen);
+    }  
+    
         //calculate cost per swipe relative to hours logged
+    
         //aka user engagement
         //get prices
             //men to women ratio (gender index)
@@ -106,4 +113,14 @@ contract Lillith is ERC20, Ownable {
     //Relationship between data value and hourly wage
 
     //Calculate cost of upkeep
+
+    //Getters
+    //get numMen
+    function getNumMen() view internal returns (uint) {
+        return numMen;
+    }
+    //get numWomen
+    function getNumWomen() view internal returns (uint) {
+        return numWomen;
+    }
 }
