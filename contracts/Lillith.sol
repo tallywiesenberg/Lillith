@@ -4,13 +4,11 @@ pragma solidity >=0.7.4 <0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import {SafeMath} from "@openzeppelin/contracts/math/SafeMath.sol";
-import {FixedMath} from "FixedMath.sol"
 
 //ERC 20 Inheritance
 contract Lillith is ERC20, Ownable {
 
     using SafeMath for uint256;
-    using FixedMath for uint256;
 
     //Engagement index (uint)
     //Gender ratio (uint)
@@ -20,10 +18,8 @@ contract Lillith is ERC20, Ownable {
     uint256 public numMen;
     //Count of women (uint)
     uint256 public numWomen;
-    //Set profit margin (stored as percent * 100, ex: 105, 110)
-    uint256 public profitMargin;
     //Gender enum
-    enum Gender{ male, female };
+    enum Gender{ male, female }
 
     //Events
         event NewUser(address user); //NewUser
@@ -35,7 +31,7 @@ contract Lillith is ERC20, Ownable {
         int256 balance; //balance int256
         uint32 hoursLogged; //uint32 hours logged
         uint32 swipes; //uint32 swipes
-        Gender gender; //false is male, true is female
+        Gender gender;
     }
     //Mapping: user (address) to user (struct)
     mapping(address => User) users;
@@ -51,7 +47,6 @@ contract Lillith is ERC20, Ownable {
     //Inital Mint
     constructor(uint256 _initialSupply, uint256 _profitMargin) ERC20("Lillith", "LTH") {
         _mint(msg.sender, _initialSupply);
-        profitMargin = _profitMargin
     }
 
 
@@ -95,37 +90,20 @@ contract Lillith is ERC20, Ownable {
     function chargeForSwipe(address _user) external payable onlyOwner {
         //Charges for a swipe based on gender and GenderRatioIndex
         //Multiply default rate (rate where genders are equal) by genderRatioIndex
-        int defaultRate = 1*10^18/120; //allows 120 profitable swipes per minute at default rate
+        uint defaultRate = uint(1*10**18/120); //allows 120 profitable swipes per minute at default rate
 
         //Retrieve user's gender from "users" mapping
 
         if (users[_user].gender == Gender.male) {
+            //Transfer value divided by 100 to account for precision in genderRatioIndex
             transferFrom(_user, msg.sender, defaultRate*genderRatioIndex);
         }
 
         if (users[_user].gender == Gender.female) {
+            //Transfer value divided by 100 to account for precision in genderRatioIndex
             transferFrom(_user, msg.sender, SafeMath.div(defaultRate, genderRatioIndex));
         }
     }
-
-    //Redeem for USDT
-
-    //Money market (calculate)
-        //calculate ratio of men to women
-    
-
-    function getGenderRatioIndex() external {
-            return genderRatioIndex;
-    }  
-    
-        //calculate cost per swipe relative to hours logged
-    function getEngagementIndex() external {
-        //aka user engagement
-
-    }
-        //get prices
-            //men to women ratio (gender index)
-            //avg swipes per hour (engagement index)
 
     //Messaging
         //Charge per message (flat rate??)
@@ -135,28 +113,7 @@ contract Lillith is ERC20, Ownable {
     function _setGenderRatioIndex() internal {
         //Compares Ratio of Men to Women
 
-        genderRatioIndex = SafeMath.div(numMen, numWomen);
-    }
-        //Set user gender
-        //Increment swipe count
-
-    //Get profit margin
-    function getProfitMargin() view external returns (uint) {
-        return profitMargin;
+        genderRatioIndex = SafeMath.div(numMen*100, numWomen);
     }
 
-
-    //Relationship between data value and hourly wage
-
-    //Calculate cost of upkeep
-
-    //Getters
-    //get numMen
-    function getNumMen() view external returns (uint) {
-        return numMen;
-    }
-    //get numWomen
-    function getNumWomen() view external returns (uint) {
-        return numWomen;
-    }
 }
