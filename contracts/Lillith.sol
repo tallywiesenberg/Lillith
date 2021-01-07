@@ -23,7 +23,7 @@ contract Lillith is ERC20, Ownable {
 
     //Events
         event NewUser(address user); //NewUser
-        event HourLogged(address user); //HourLogged
+        event MinuteLogged(address user); //HourLogged
         event NewMatch(address user1, address user2); //NewMatch ??
 
     //User Struct
@@ -39,13 +39,8 @@ contract Lillith is ERC20, Ownable {
     //Array of addresses
     address[] public addresses;
 
-
-    
-    //Swipe Struct ??
-
-
     //Inital Mint
-    constructor(uint256 _initialSupply, uint256 _profitMargin) ERC20("Lillith", "LTH") {
+    constructor(uint256 _initialSupply) ERC20("Lillith", "LTH") {
         _mint(msg.sender, _initialSupply);
     }
 
@@ -78,11 +73,11 @@ contract Lillith is ERC20, Ownable {
     }
 
     //Rewards (called from Python)
-    function dispenseTimeReward(address _user, uint _reward) external onlyOwner {
-        //Dispense funds for 1 hour of logged time
-        transferFrom(msg.sender, _user, _reward);
+    function dispenseTimeReward(address _user) external onlyOwner {
+        //Dispense funds for 1 hour of logged time (1 LTH)
+        transferFrom(msg.sender, _user, 1*10**18);
         //Increment user balance (do I need to do this? does the above take care of this?)
-        emit HourLogged(_user);
+        emit MinuteLogged(_user);
         
     }
     //Costs
@@ -106,13 +101,13 @@ contract Lillith is ERC20, Ownable {
     }
 
     //Messaging
-        //Charge per message (flat rate??)
+    function chargeForMessage(address _user, uint toxicity) external payable onlyOwner {
+        //toxicity measured by off-chain sentiment analysis
 
-    //Setters
+    }
 
     function _setGenderRatioIndex() internal {
         //Compares Ratio of Men to Women
-
         genderRatioIndex = SafeMath.div(numMen*100, numWomen);
     }
 
