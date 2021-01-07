@@ -76,9 +76,7 @@ contract Lillith is ERC20, Ownable {
     function dispenseTimeReward(address _user) external onlyOwner {
         //Dispense funds for 1 hour of logged time (1 LTH)
         transferFrom(msg.sender, _user, 1*10**18);
-        //Increment user balance (do I need to do this? does the above take care of this?)
-        emit MinuteLogged(_user);
-        
+        emit MinuteLogged(_user);  
     }
     //Costs
         //Calculate charge per swipe
@@ -102,8 +100,8 @@ contract Lillith is ERC20, Ownable {
 
     //Messaging
     function chargeForMessage(address _user, uint toxicity) external payable onlyOwner {
+        //Charges user per message
         //toxicity measured by off-chain sentiment analysis
-
     }
 
     function _setGenderRatioIndex() internal {
