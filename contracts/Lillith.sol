@@ -100,8 +100,7 @@ contract Lillith is ERC20, Ownable {
 
     //Messaging
     function chargeForMessage(address _user, uint toxicity) external payable onlyOwner {
-        //Charges user per message
-        //toxicity measured by off-chain sentiment analysis
+        //Charges user per message. toxicity measured by off-chain sentiment analysis
     }
 
     function _setGenderRatioIndex() internal {
