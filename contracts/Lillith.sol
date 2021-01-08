@@ -1,5 +1,5 @@
 // add MIT License
-pragma solidity >=0.7.4 <0.8.0;
+pragma solidity >=0.7.0 <0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
@@ -56,7 +56,7 @@ contract Lillith is ERC20, Ownable {
             balance:0,
             hoursLogged:0,
             swipes:0,
-            gender:_gender //collect gender as argument (false is male, true is female)
+            gender:_gender //collect gender as argument
         });
         //if gender is female (true), add 10E18 to female count
         if (_gender == Gender.female) {
@@ -89,23 +89,23 @@ contract Lillith is ERC20, Ownable {
 
         if (users[_user].gender == Gender.male) {
             //Transfer value divided by 100 to account for precision in genderRatioIndex
-            transferFrom(_user, msg.sender, defaultRate*genderRatioIndex);
+            transferFrom(_user, msg.sender, uint(SafeMath.div(defaultRate*genderRatioIndex, 100)));
         }
 
         if (users[_user].gender == Gender.female) {
             //Transfer value divided by 100 to account for precision in genderRatioIndex
-            transferFrom(_user, msg.sender, SafeMath.div(defaultRate, genderRatioIndex));
+            transferFrom(_user, msg.sender, uint(SafeMath.div(defaultRate*100, genderRatioIndex)));
         }
     }
 
     //Messaging
-    function chargeForMessage(address _user, uint toxicity) external payable onlyOwner {
+    function chargeForMessage(address _user, uint _toxicity) external payable onlyOwner {
         //Charges user per message. toxicity measured by off-chain sentiment analysis
     }
 
     function _setGenderRatioIndex() internal {
         //Compares Ratio of Men to Women
-        genderRatioIndex = SafeMath.div(numMen*100, numWomen);
+        genderRatioIndex = uint(SafeMath.div(numMen*100, numWomen));
     }
 
 }
