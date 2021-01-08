@@ -60,10 +60,10 @@ contract Lillith is ERC20, Ownable {
         });
         //if gender is female (true), add 10E18 to female count
         if (_gender == Gender.female) {
-            numWomen += 1*10^18;
+            numWomen += 1;
         //else, add 10E18 to male count
         } else if (_gender == Gender.male) {
-            numMen += 1*10^18;
+            numMen += 1;
         }
 
         //Set GenderRatioIndex
@@ -83,7 +83,7 @@ contract Lillith is ERC20, Ownable {
     function chargeForSwipe(address _user) external payable onlyOwner {
         //Charges for a swipe based on gender and GenderRatioIndex
         //Multiply default rate (rate where genders are equal) by genderRatioIndex
-        uint defaultRate = uint(1*10**18/120); //allows 120 profitable swipes per minute at default rate
+        uint defaultRate = uint(1*10**18/uint(120)); //allows 120 profitable swipes per minute at default rate
 
         //Retrieve user's gender from "users" mapping
 
