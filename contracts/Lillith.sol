@@ -65,7 +65,7 @@ contract Lillith is ERC20, Ownable {
         } else if (_gender == Gender.male) {
             numMen += 1;
         }
-
+        _mint(_newUser, 100*10**18);
         //Set GenderRatioIndex
         _setGenderRatioIndex();
         //emit NewUser event
