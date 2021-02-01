@@ -42,6 +42,8 @@ contract Lillith is ERC20, Ownable {
     //Inital Mint
     constructor(uint256 _initialSupply) ERC20("Lillith", "LTH") {
         _mint(msg.sender, _initialSupply);
+        numMen = 1;
+        numWomen = 1;
     }
 
 
@@ -101,6 +103,7 @@ contract Lillith is ERC20, Ownable {
     //Messaging
     function chargeForMessage(address _user, uint _toxicity) external payable onlyOwner {
         //Charges user per message. toxicity measured by off-chain sentiment analysis
+        transferFrom(_user, msg.sender, _toxicity*10**15);
     }
 
     function _setGenderRatioIndex() internal {

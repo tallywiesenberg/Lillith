@@ -47,6 +47,11 @@ module.exports = {
      port: 8545,            // Standard Ethereum port (default: none)
      network_id: "*",       // Any network (default: none)
     },
+    rinkeby: {
+      host: "https://rinkeby.infura.io/v3/1a09c4705f114af2997548dd901d655b",
+      port: 8545,
+      network_id:4,
+    }
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port
